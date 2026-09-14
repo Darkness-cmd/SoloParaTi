@@ -28,6 +28,30 @@
             min-height: 100vh;
             box-sizing: border-box;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Estilos para el fondo de estrellas titilantes */
+        .stars-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #ff007f, 0 0 12px #ffffff; }
         }
 
         .container {
@@ -36,10 +60,11 @@
             background: var(--box-bg);
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
             text-align: center;
             border: 1px solid var(--secondary-color);
             position: relative;
+            z-index: 1;
         }
 
         .card {
@@ -124,6 +149,9 @@
 </head>
 <body>
 
+    <!-- Fondo dinámico de estrellas -->
+    <div class="stars-background" id="starsContainer"></div>
+
     <div class="container">
         <!-- Paso 1: Inicio (Reflejando tu forma de ser) -->
         <div class="card active" id="step-1">
@@ -139,7 +167,7 @@
             <h1>De verdad, gracias totales 🥹</h1>
             <p>Queria Darte las gracias por todo el apoyo durante este tiempo muchas veces me has dado ese impulso que nesecitaba y ayudado cuando me he sentido perdido y de verdad valoro todo lo que has hecho por mi. aunque no lo exprese con palabras </p>
             <img src="img/gato1.gif" alt="Gatito trabajador" class="cat-meme">
-            <p style="font-size: 13px; font-style: italic;"> :v</p>
+            <p style="font-size: 13px; font-style: italic;">Literalmente fuiste este gato intentando entender el sistema, pero salvándome el año jajaja.</p>
             <button class="btn" onclick="nextStep(3)">Continuar ✨</button>
         </div>
 
@@ -182,6 +210,27 @@
     </div>
 
     <script>
+        // Generar destellos de estrellas aleatorios en el fondo
+        const starsContainer = document.getElementById('starsContainer');
+        const numberOfStars = 35;
+
+        for (let i = 0; i < numberOfStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            
+            const size = Math.random() * 3 + 1; // tamaño entre 1px y 4px
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            
+            star.style.animationDuration = `${Math.random() * 3 + 2}s`; // entre 2s y 5s
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            
+            starsContainer.appendChild(star);
+        }
+
         function nextStep(stepNumber) {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => card.classList.remove('active'));
